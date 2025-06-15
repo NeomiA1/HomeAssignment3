@@ -1,59 +1,87 @@
-document.querySelector("#register-form").addEventListener("submit", function (e){
-    e.preventDefault();
+//  הרשמה והתחברות (usersList, currentUser)
+const registerForm = document.querySelector("#register-form");
 
-    const username = document.querySelector("#username").value.trim();
-    const password = document.querySelector("#password").value;
-    const errormessage = document.querySelector("#error-message");
+if (registerForm) {
+    registerForm.addEventListener("submit", function(e) {
+        e.preventDefault();
 
-    if(password.length < 8) {
-        errormessage.textContent = "Password must be at least 8 characters.";
-        return;
-    }
+        const usernameInput = document.querySelector("#user-name").value.trim();
+        const passwordInput = document.querySelector("#password").value;
+        const errorElement = document.querySelector("#error");
 
-    let users = loadFromStorage("usersList") || [];
-    let existingUser = users.find(function(user) {
-        return user.username === username;
+        if (passwordInput.length < 8) {
+            errorElement.textContent = "Password must be at least 8 characters.";
+            return;
+        }
+
+        let userListStr = loadFromStorage("usersList");
+        let usersList;
+
+        if (userListStr !== null) {
+            usersList = userListStr;
+        }
+        else {
+            usersList = [];
+        }
+
+        let userExists = usersList.some(function(user) {
+            return user.username === usernameInput;
+        });
+
+        if (userExists) {
+            errorElement.innerHTML = 'Username already exists. <br> <a href="login.html">Click here to login</a>.';
+            return;
+        }
+
+        let newUser = {
+            username: usernameInput,
+            password: passwordInput
+        };
+
+        usersList.push(newUser);
+
+        saveToStorage("usersList",usersList);
+       saveToStoragetem("currentUser", usernameInput);
+
+        window.location.href = "index.html";
     });
+}
 
-    if (existingUser) {
-        errormessage.textContent = "Username already exists.";
-        return;
-    }
+const loginForm = document.querySelector("#login-form");
 
-    users.push({
-        username: username,
-        password: password
+if (loginForm) {
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const usernameInput = document.querySelector("#username").value.trim();
+        const passwordInput = document.querySelector("#password").value;
+        const errorElement = document.querySelector("#error");
+    
+        let userListStr = loadFromStorage("usersList");
+        let usersList;
+    
+        if (userListStr !== null) {
+            usersList = userListStr;
+        }
+        else {
+            usersList = [];
+        }
+    
+        let foundUser = usersList.find(function(user){
+            return user.username === usernameInput && user.password === passwordInput;
+    
+        });
+    
+        if (!foundUser) {
+            errorElement.textContent = "Invalid username or password.";
+            return;
+        }
+    
+       saveToStorage("currentUser", usernameInput);
+        window.location.href = "index.html";
+
     });
+}
 
-    saveToStorage("usersList", users);
-    saveToStorage("currentUser", username);
-
-    window.location.href = "index.html";
-});
-
-document.querySelector("#login-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const loginUserName = document.querySelector("#username").value.trim();
-    const loginPassword = document.querySelector("#password").value;
-    const loginError = document.querySelector("#error-message");
-
-    let allUsers = loadFromStorage("usersList") || [];
-
-    let foundUser = allUsers.find(function(user){
-        return user.username === loginUserName && user.password === loginPassword;
-
-    });
-
-    if (!foundUser) {
-        loginError.textContent = "Invalid username or password.";
-        return;
-    }
-
-    saveToStorage("currentUser", loginUserName);
-
-    window.location.href = "index.html";
-});
 
 const nameSpan = document.querySelector("#nbr-user-name");
 

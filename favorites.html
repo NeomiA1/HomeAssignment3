@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Favorites</title>
+  <link rel="icon" href="images/icon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="css/favorites.css" />
   <script src="js/data/amsterdam.js"></script>
   <script defer src="js/favorites.js"></script>
@@ -11,11 +12,16 @@
 <body>
   <header class="navbar">
     <nav>
-      <a href="index.html">Home</a>
-      <a href="favorites.html">Favorites</a>
-      <a href="mybookings.html">My bookings</a>
-      <span id="nbr-user-name"></span>
-      <button id="btn-logout">Log out</button>
+      <div class="logo-container">
+        <img src="images/sitelogo.png" alt="Site logo" class="site-logo" />
+        <span id="nbr-user-name"></span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="mybookings.html">My bookings</a>
+        <button id="btn-logout">Log out</button>
+      </div>
     </nav>
   </header>
 
@@ -23,5 +29,9 @@
     <h1>My Favorite Apartments</h1>
     <div id="favorites-list"></div>
   </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+
 </body>
 </html>
