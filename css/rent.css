@@ -9,6 +9,7 @@ body {
   min-height: 100vh;
 }
 
+
 .navbar {
   background-color: #a09971;
   width: 100%;
@@ -38,6 +39,12 @@ body {
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+
+#nbr-user-name {
+  color: white;
+  font-weight: bold;
+  padding: 0.8rem 0.8rem;
 }
 
 .navbar a {
