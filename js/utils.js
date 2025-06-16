@@ -1,8 +1,10 @@
 window.addEventListener('DOMContentLoaded', () => {
     logoutBtnHandler();
     // checkIfLoggedIn();
-    appendApartmentCards(amsterdam);
+    appendApartmentCards(window.amsterdam);
     showUserName();
+    setupFilterForm();
+    setupResetButton();
 });
 
 function showUserName() {
@@ -42,24 +44,53 @@ function createElement(tag, className = '', textContent = '') {
     return element;
 }
 
-function addApartmentCard(apId, apURL, apName, apDescription, apPic){
-    const listingSection = document.querySelector('#listing');
-    const cardDiv = createElement('div', 'card');
-    cardDiv.id = apId; // for easy access later for renting
-    
-    const id = createElement('p', 'card-id', ApartmentID,{apId});
-    const cardTitle = createElement('h3', 'card-title', apName);
-    const cardDescription = createElement('p', 'card-description');
-    cardDescription.innerHTML = apDescription;
-    const cardImage = createElement('img', 'card-image');
-    cardImage.src = apPic;
-    const URL = createElement('a', 'url', 'View Details');
-    URL.href = apURL;
-    cardDiv.append(id, cardTitle, cardDescription, cardImage, URL);
-    listingSection.appendChild(cardDiv);
+function addApartmentCard(apId, apURL, apName, apDescription, apPic) {
+  const listingSection = document.querySelector('#listing');
+  const username = localStorage.getItem("currentUser");
+  let favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
+
+  const cardDiv = createElement('div', 'card');
+  cardDiv.id = apId;
+
+  const id = createElement('p', 'card-id', `Apartment ID: ${apId}`);
+  const title = createElement('h3', 'card-title', apName);
+  const description = createElement('p', 'card-description');
+  description.innerHTML = apDescription;
+
+  const image = createElement('img', 'card-image');
+  image.src = apPic;
+  image.alt = apName;
+
+  const rentBtn = createElement('a', 'rent-button', 'Rent');
+  rentBtn.href = `rent.html?id=${apId}`;
+
+  const favBtn = createElement('button', 'fav-button');
+  favBtn.textContent = favorites.includes(apId) ? '★ Remove from Favorites' : '☆ Add to Favorites';
+
+  favBtn.addEventListener('click', () => {
+    favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
+    if (favorites.includes(apId)) {
+      favorites = favorites.filter(id => id !== apId);
+    } else {
+      favorites.push(apId);
+    }
+    localStorage.setItem(`${username}_favorites`, JSON.stringify(favorites));
+    favBtn.textContent = favorites.includes(apId) ? '★ Remove from Favorites' : '☆ Add to Favorites';
+  });
+
+  // עטיפת הכפתורים יחד בשורה אחת
+  const btnsContainer = createElement('div', 'buttons-container');
+  btnsContainer.append(rentBtn, favBtn);
+
+  // הרכבת כרטיס
+  cardDiv.append(title, id, description, image, btnsContainer);
+  listingSection.appendChild(cardDiv);
 }
 
 function appendApartmentCards(amsterdam) {
+    const listingSection = document.querySelector('#listing');
+    listingSection.innerHTML = '';
+
     amsterdam.forEach(apartment => {
         addApartmentCard(
             apartment.listing_id,
@@ -68,6 +99,40 @@ function appendApartmentCards(amsterdam) {
             apartment.description,
             apartment.picture_url
         );
-        
+    });
+    document.querySelector('#apartment-count').textContent = amsterdam.length;
+}
+
+function setupFilterForm() {
+    document.querySelector('#filter-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const minRating = parseFloat(document.querySelector('#min-rating').value) || 0;
+        const minPrice = parseFloat(document.querySelector('#min-price').value) || 0;
+        const maxPrice = parseFloat(document.querySelector('#max-price').value) || Infinity;
+        const roomCount = document.querySelector('#room-count').value;
+
+        const filtered = window.amsterdam.filter(ap => {
+            const rating = parseFloat(ap.review_scores_rating) || 0;
+            const price = parseFloat(ap.price.replace(/[^0-9.]/g, '')) || 0;
+            const rooms = parseInt(ap.bedrooms) || 0;
+            return rating >= minRating &&
+                   price >= minPrice &&
+                   price <= maxPrice &&
+                   (roomCount === "" || (roomCount === "4" ? rooms >= 4 : rooms === parseInt(roomCount)));
+        });
+
+        appendApartmentCards(filtered);
     });
 }
+
+function setupResetButton() {
+    const resetBtn = document.querySelector('#reset-filter');
+    if (!resetBtn) return;
+    resetBtn.addEventListener('click', () => {
+        document.querySelector('#filter-form').reset();
+        appendApartmentCards(window.amsterdam);
+    });
+}
+
+

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
     return;
   }
-
+  
   const favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
   const container = document.getElementById("favorites-list");
 
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = `<p id="no-favorites">You have no favorite apartments.</p>`;
     return;
   }
-
+ 
   favorites.forEach((favId, index) => {
     const listing = amsterdam.find(ap => ap.listing_id === favId);
     if (!listing) return;

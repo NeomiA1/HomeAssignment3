@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home</title>
   <link rel="icon" href="images/icon.ico" type="image/x-icon" />
   <script src="js/data/amsterdam.js" defer></script>
-  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/home.css"/>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/utils.js" defer></script>
 </head>
+
 <body>
   <header class="navbar">
     <nav>
@@ -23,18 +28,41 @@
       </div>
     </nav>
   </header>
-  <main>
+  <main id ="home-container">
     <section id="summary">
       <p>Total apartments available: <span id="apartment-count"></span></p>
     </section>
-
-      <section id="listing">
-
-      </section>
-    </main>
-
-  <script src="js/storage.js"></script>
-  <script src="js/auth.js" defer></script>
+    <section id="filter">
+      <h2>Filter Apartments</h2>
+      <form id="filter-form">
+        <label class="filter-label">
+          Min Rating:
+          <input type="number" id="min-rating" min="0" max="5" step="0.1" />
+        </label>
+        <label class="filter-label">
+          Min Price:
+          <input type="number" id="min-price" />
+        </label>
+        <label class="filter-label">
+          Max Price:
+          <input type="number" id="max-price" />
+        </label>
+        <label class="filter-label">
+          Room Count:
+          <select id="room-count">
+            <option value="">Any</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
+          </select>
+        </label>
+        <button type="submit" class="filter-form-button">Filter</button>
+        <button type="button" id="reset-filter" class="filter-form-button">Clear Filters</button>
+      </form>
+    </section>
+    <section id="listing"></section>
+  </main>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -50,11 +78,10 @@
           <h3>${listing.name}</h3>
           <img src="${listing.picture_url}" alt="${listing.name}" width="300" />
           <p>${listing.description}</p>
-          <a href="rent.html?id=${listing.listing_id}" class="rent-button">Rent</a>
-        `;
+          <a href="rent.html?id=${listing.listing_id}" class="rent-button">Rent</a>`;
         container.appendChild(card);
       });
     });
-  </script>
+  </script> 
 </body>
 </html>

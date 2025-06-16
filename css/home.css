@@ -90,12 +90,24 @@ h1 {
 
 #summary {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
   font-weight: bold;
+  background-color: #fffbe6;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
 }
 
-.apartment-card {
-  background-color: white;
+#listing{
+ display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; 
+}
+
+.card {
+  background-color: #ffffffa2;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 1rem;
@@ -103,39 +115,41 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.apartment-card img {
+.card img {
   width: 100%;
   max-width: 400px;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
   border-radius: 8px;
+  box-shadow:#e0e0e0;
 }
 
-.apartment-info {
-  text-align: center;
+.card-description {
   margin-top: 1rem;
-}
-
-.card-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+  font-size: 1rem;
+  color: black;
+  text-align:left;
 }
 
 .rent-button {
-  background-color: #007bff;
-  color: white;
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 6px;
-  text-decoration: none;
+  color:white;
+  background-color: blue;
+  padding: 0.5rem 0.5rem;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top:1rem;
+  border-radius:8px;
+  text-decoration: none;
 }
 
 .rent-button:hover {
-  background-color: #0056b3;
+  background-color: darkblue;
 }
 
 .fav-button {
@@ -146,19 +160,65 @@ h1 {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  margin-top: 1rem;
 }
 
-.fav-button:disabled {
+/* .fav-button:disabled {
   background-color: #e0e0e0;
   color: #777;
   cursor: not-allowed;
+} */
+
+.fav-button:hover {
+  background-color: #e0b207;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+#filter{
+  background-color: #ffffffa2;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+
+#filter-form{
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.filter-label {
+  display: flex;
+  flex-direction:column;
+  font-weight: bold;
+  color: #333;
+  flex: 1 1 200px;
+}
+
+.filter-form-button{
+  background-color: #f1edd8;
+  padding: 0.5rem 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-form-button:hover {
+  background-color: #e0dbc1;
 }
 
 @media (max-width: 600px) {
-  .card-actions {
-    flex-direction: column;
-  }
-
   .navbar nav {
     flex-direction: column;
     gap: 0.5rem;
