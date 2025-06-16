@@ -83,7 +83,7 @@ function addApartmentCard(apId, apURL, apName, apDescription, apPic) {
   btnsContainer.append(rentBtn, favBtn);
 
   // הרכבת כרטיס
-  cardDiv.append(title, id, description, image, btnsContainer);
+  cardDiv.append(title, image, id, description, btnsContainer);
   listingSection.appendChild(cardDiv);
 }
 
