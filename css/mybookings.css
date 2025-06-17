@@ -121,8 +121,8 @@ h1 {
   color: #555;
 }
 
-@media (max-width: 600px) {
-  main#bookings-container {
+@media (max-width: 768px) {
+  #bookings-container {
     padding: 1.2rem;
   }
 
