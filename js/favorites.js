@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = `<p id="no-favorites">You have no favorite apartments.</p>`;
     return;
   }
- 
+
   favorites.forEach((favId, index) => {
     const listing = amsterdam.find(ap => ap.listing_id === favId);
     if (!listing) return;
