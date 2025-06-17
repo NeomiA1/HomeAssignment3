@@ -25,7 +25,7 @@ body {
   padding: 1rem 0.8rem;
 }
 
-main#home-container {
+#home-container {
   background-color: #f1edd8;
   width: 90%;
   max-width: 1100px;
@@ -53,23 +53,24 @@ h1 {
   margin-bottom: 2rem;
 }
 
-#listing{
- display: flex;
+#listing {
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem; 
+  gap: 2rem;
 }
 
 .card {
   background-color: #ffffffa2;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  max-width:100%;
   box-sizing: border-box;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -80,25 +81,25 @@ h1 {
   height: 250px;
   object-fit: cover;
   border-radius: 8px;
-  box-shadow:#e0e0e0;
+  box-shadow: #e0e0e0;
 }
 
 .card-description {
   margin-top: 1rem;
   font-size: 1rem;
   color: black;
-  text-align:left;
+  text-align: left;
 }
 
 .rent-button {
-  color:white;
+  color: white;
   background-color: blue;
   padding: 0.5rem 0.5rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top:1rem;
-  border-radius:8px;
+  margin-top: 1rem;
+  border-radius: 8px;
   text-decoration: none;
 }
 
@@ -135,32 +136,32 @@ h1 {
   margin-top: 1rem;
 }
 
-#filter{
+#filter {
   background-color: #ffffffa2;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
   max-width: 100%;
 }
 
-#filter-form{
+#filter-form {
   display: flex;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 1.5rem;
 }
 
 .filter-label {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   font-weight: bold;
   color: #333;
   flex: 1 1 200px;
 }
 
-.filter-form-button{
+.filter-form-button {
   background-color: #f1edd8;
   padding: 0.5rem 0.5rem;
   font-weight: bold;
@@ -172,3 +173,10 @@ h1 {
   background-color: #e0dbc1;
 }
 
+
+@media (max-width: 768px) {
+  #home-container {
+    padding: 1.2rem;
+
+  }
+}
