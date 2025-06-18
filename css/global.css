@@ -6,6 +6,17 @@ html {
     box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #EEEFE0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
 .navbar {
     background-color: #a09971;
     width: 100%;
@@ -68,6 +79,7 @@ html {
 .hamburger {
     display: none;
 }
+
 
 @media (max-width: 480px) {
     .navbar {
