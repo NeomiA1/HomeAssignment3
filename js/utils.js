@@ -23,6 +23,7 @@ function logoutBtnHandler() {
         window.location.href = 'login.html';
     });
 }
+document.addEventListener("DOMContentLoaded", showUserName);
 
 function checkIfLoggedIn() {
     const currUser = localStorage.getItem('currentUser');
@@ -106,7 +107,10 @@ function appendApartmentCards(amsterdam) {
 }
 
 function setupFilterForm() {
-    document.querySelector('#filter-form').addEventListener('submit', (e) => {
+    const filterForm = document.querySelector('#filter-form');
+    if (!filterForm) return;
+
+    filterForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const minRating = parseFloat(document.querySelector('#min-rating').value) || 0;
