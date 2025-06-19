@@ -1,12 +1,18 @@
 window.addEventListener('DOMContentLoaded', () => {
-    logoutBtnHandler();
     checkIfLoggedIn();
+    logoutBtnHandler();
     appendApartmentCards(window.amsterdam);
     showUserName();
     setupFilterForm();
     setupResetButton();
     setupHamburger();
 });
+function checkIfLoggedIn() {
+    const currUser = localStorage.getItem('currentUser');
+    if (!currUser) {
+        window.location.href = 'login.html';
+    }
+}
 
 function showUserName() {
     const userNameSpan = document.querySelector("#nbr-user-name");
@@ -22,14 +28,6 @@ function logoutBtnHandler() {
         localStorage.removeItem('currentUser');
         window.location.href = 'login.html';
     });
-}
-document.addEventListener("DOMContentLoaded", showUserName);
-
-function checkIfLoggedIn() {
-    const currUser = localStorage.getItem('currentUser');
-    if (!currUser) {
-        window.location.href = 'login.html';
-    }
 }
 
 // #############################################################

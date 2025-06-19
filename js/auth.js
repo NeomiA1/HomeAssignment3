@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     showUserName();
     logoutBtnHandler();
-});
+}); 
 
 // הרשמה
 const registerForm = document.querySelector("#register-form");
