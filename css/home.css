@@ -141,31 +141,51 @@ h1 {
 #filter {
   background-color: #ffffffa2;
   padding: 2rem;
+  margin: 2rem auto;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   max-width: 100%;
+  text-align:center ;
 }
 
 #filter-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
 }
 
 .filter-label {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   font-weight: bold;
+  font-size: 0.95rem;
   color: #333;
-  flex: 1 1 200px;
+}
+
+.filter-label input,
+.filter-label select {
+  width: 70%;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.filter-label input:focus,
+.filter-label select:focus {
+  border-color: #409ddf;
+  outline: none;
 }
 
 .filter-form-button {
   background-color: #f1edd8;
-  padding: 0.5rem 0.5rem;
+  padding: 0.6rem 1rem;
+  color: black;
+  border: none;
+  border-radius:  0.5rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
