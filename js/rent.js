@@ -44,17 +44,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const username = localStorage.getItem("currentUser");
+    const username = loadFromStorage("currentUser");
     if (!username) {
       messageEl.textContent = "You must be logged in to book.";
       return;
     }
 
     const bookingKey = `${username}_bookings`;
-    const bookings = JSON.parse(localStorage.getItem(bookingKey)) || [];
+    const bookings = loadFromStorage(bookingKey) || [];
 
     bookings.push({ listingId, startDate, endDate });
-    localStorage.setItem(bookingKey, JSON.stringify(bookings));
+    saveToStorage(bookingKey, bookings);
     messageEl.textContent = "Booking confirmed!";
     form.reset();
   });
@@ -64,7 +64,7 @@ function checkAvailability(listingId, startDate, endDate) {
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (key.endsWith("_bookings")) {
-      const bookings = JSON.parse(localStorage.getItem(key)) || [];
+      const bookings = loadFromStorage(key) || [];
       for (const booking of bookings) {
         if (
           booking.listingId === listingId &&

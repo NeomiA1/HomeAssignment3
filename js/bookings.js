@@ -1,14 +1,14 @@
 //  הוספה/ביטול השכרות, לפי currentUser
 const currentUser = loadFromStorage("currentUser");
 document.addEventListener("DOMContentLoaded", () => {
-  const username = localStorage.getItem("currentUser");
+  const username = loadFromStorage("currentUser");
   if (!username) {
     alert("You must be logged in to view bookings.");
     window.location.href = "index.html";
     return;
   }
 
-  const bookings = JSON.parse(localStorage.getItem(`${username}_bookings`)) || [];
+  const bookings = loadFromStorage(`${username}_bookings`) || [];
   const futureList = document.getElementById("future-list");
   const pastList = document.getElementById("past-list");
   const today = new Date().toISOString().split("T")[0];
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelBtn.className = "cancel-button";
       cancelBtn.addEventListener("click", () => {
         bookings.splice(index, 1);
-        localStorage.setItem(`${username}_bookings`, JSON.stringify(bookings));
+        saveToStorage(`${username}_bookings`, bookings);
         location.reload();
       });
       card.appendChild(cancelBtn);

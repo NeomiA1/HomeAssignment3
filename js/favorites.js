@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const username = localStorage.getItem("currentUser");
+  const username = loadFromStorage("currentUser");
   if (!username) {
     alert("You must be logged in to view favorites.");
     window.location.href = "index.html";
     return;
   }
   
-  const favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
+  const favorites = loadFromStorage(`${username}_favorites`) || [];
   const container = document.getElementById("favorites-list");
 
   if (favorites.length === 0) {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     card.querySelector(".remove-button").addEventListener("click", () => {
       favorites.splice(index, 1);
-      localStorage.setItem(`${username}_favorites`, JSON.stringify(favorites));
+      saveToStorage(`${username}_favorites`, favorites);
       location.reload();
     });
 
