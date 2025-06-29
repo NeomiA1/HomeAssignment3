@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const amsterdam = window.amsterdam;
   const listingId = new URLSearchParams(window.location.search).get("id");
 
-  console.log("listingId:", listingId);
-  console.log("available listing_ids:", amsterdam.map(a => a.listing_id));
-
   const listing = amsterdam.find(ap => ap.listing_id === listingId);
   const detailsEl = document.getElementById("listing-details");
   const messageEl = document.getElementById("booking-message");
@@ -34,19 +31,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
 
-    if (!startDate || !endDate || startDate > endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    messageEl.className = ""; // Reset previous classes
+
+    if (!startDate || !endDate || isNaN(start) || isNaN(end) || start >= end) {
       messageEl.textContent = "Invalid date range.";
+      messageEl.classList.add("error");
       return;
     }
 
     if (!checkAvailability(listingId, startDate, endDate)) {
       messageEl.textContent = "Selected dates are not available.";
+      messageEl.classList.add("error");
       return;
     }
 
     const username = loadFromStorage("currentUser");
     if (!username) {
       messageEl.textContent = "You must be logged in to book.";
+      messageEl.classList.add("error");
       return;
     }
 
@@ -55,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     bookings.push({ listingId, startDate, endDate });
     saveToStorage(bookingKey, bookings);
+
     messageEl.textContent = "Booking confirmed!";
+    messageEl.classList.add("success");
     form.reset();
   });
 });

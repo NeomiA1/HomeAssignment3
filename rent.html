@@ -18,7 +18,7 @@
         <img src="images/sitelogo.png" alt="Site logo" class="site-logo" />
         <span id="nbr-user-name"></span>
       </div>
-      <button class="hamburger" type="button">
+      <button class="hamburger" type="button" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
       </button>
       <ul class="nav-links">
@@ -36,25 +36,27 @@
     <section id="rental-form">
       <h2>Book this apartment</h2>
       <form id="booking-form">
-        <label for="fullName">Full Name:</label>
-        <input type="text" id="fullName" required />
+        <fieldset>
+          <legend>Booking Details</legend>
 
-        <label for="creditCard">Credit Card Number:</label>
-        <input type="text" id="creditCard" required />
+          <label for="fullName">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" required aria-required="true" />
 
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" required />
+          <label for="creditCard">Credit Card Number:</label>
+          <input type="text" id="creditCard" name="creditCard" required aria-required="true" />
 
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" required />
+          <label for="startDate">Start Date:</label>
+          <input type="date" id="startDate" name="startDate" required aria-required="true" />
 
-        <button type="submit">Confirm Booking</button>
+          <label for="endDate">End Date:</label>
+          <input type="date" id="endDate" name="endDate" required aria-required="true" />
+
+          <button type="submit">Confirm Booking</button>
+        </fieldset>
       </form>
 
-      <p id="booking-message"></p>
+      <p id="booking-message" role="alert"></p>
     </section>
   </main>
-
-
 </body>
 </html>
