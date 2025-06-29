@@ -1,5 +1,7 @@
 //  הוספה/ביטול השכרות, לפי currentUser
 const currentUser = loadFromStorage("currentUser");
+const amsterdam = window.amsterdam;
+
 document.addEventListener("DOMContentLoaded", () => {
   const username = loadFromStorage("currentUser");
   if (!username) {
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (bookings.length === 0) {
     futureList.innerHTML = `<p id="no-bookings">No bookings found.</p>`;
     pastList.innerHTML = `<p id="no-bookings">No bookings found.</p>`;
-    return;
+    return; 
   }
 
   bookings.forEach((booking, index) => {

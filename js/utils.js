@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setupHamburger();
 });
 function checkIfLoggedIn() {
-    const currUser = localStorage.getItem('currentUser');
+    const currUser = loadFromStorage('currentUser');
     if (!currUser) {
         window.location.href = 'login.html';
     }
@@ -16,7 +16,7 @@ function checkIfLoggedIn() {
 
 function showUserName() {
     const userNameSpan = document.querySelector("#nbr-user-name");
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = loadFromStorage("currentUser");
     if (currentUser && userNameSpan) {
         userNameSpan.textContent = `Welcome, ${currentUser}`;
     }
@@ -46,8 +46,8 @@ function createElement(tag, className = '', textContent = '') {
 
 function addApartmentCard(apId, apURL, apName, apDescription, apPic) {
   const listingSection = document.querySelector('#listing');
-  const username = localStorage.getItem("currentUser");
-  let favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
+  const username = loadFromStorage ("currentUser");
+  let favorites = loadFromStorage(`${username}_favorites`) || [];
 
   const cardDiv = createElement('div', 'card');
   cardDiv.id = apId;
@@ -68,15 +68,27 @@ function addApartmentCard(apId, apURL, apName, apDescription, apPic) {
   favBtn.textContent = favorites.includes(apId) ? '★ Remove from Favorites' : '☆ Add to Favorites';
 
   favBtn.addEventListener('click', () => {
-    favorites = JSON.parse(localStorage.getItem(`${username}_favorites`)) || [];
-    if (favorites.includes(apId)) {
-      favorites = favorites.filter(id => id !== apId);
-    } else {
-      favorites.push(apId);
+    favorites = loadFromStorage(`${username}_favorites`) || [];
+    let found = false;
+
+    let newFavorites = [];
+
+    for (let i = 0; i < favorites.length; i++) {
+     if (favorites[i] === apId) {
+      found = true;
+     continue;
     }
-    localStorage.setItem(`${username}_favorites`, JSON.stringify(favorites));
-    favBtn.textContent = favorites.includes(apId) ? '★ Remove from Favorites' : '☆ Add to Favorites';
-  });
+     newFavorites.push(favorites[i]); 
+    }
+
+    if (found) {
+    favorites = newFavorites;
+    } else {
+  favorites.push(apId);
+}
+    saveToStorage(`${username}_favorites`, favorites);
+    favBtn.textContent = found ? '★ Remove from Favorites' : '☆ Add to Favorites';
+  });   
 
   // עטיפת הכפתורים יחד בשורה אחת
   const btnsContainer = createElement('div', 'buttons-container');
@@ -111,20 +123,44 @@ function setupFilterForm() {
     filterForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const minRating = parseFloat(document.querySelector('#min-rating').value) || 0;
-        const minPrice = parseFloat(document.querySelector('#min-price').value) || 0;
-        const maxPrice = parseFloat(document.querySelector('#max-price').value) || Infinity;
-        const roomCount = document.querySelector('#room-count').value;
+        let minRating = parseFloat(document.querySelector('#min-rating').value) || 0;
+        let minPrice = parseFloat(document.querySelector('#min-price').value) || 0;
+        let maxPrice = parseFloat(document.querySelector('#max-price').value) || Infinity;
+        let roomCount = document.querySelector('#room-count').value;
 
-        const filtered = window.amsterdam.filter(ap => {
-            const rating = parseFloat(ap.review_scores_rating) || 0;
-            const price = parseFloat(ap.price.replace(/[^0-9.]/g, '')) || 0;
-            const rooms = parseInt(ap.bedrooms) || 0;
-            return rating >= minRating &&
-                   price >= minPrice &&
-                   price <= maxPrice &&
-                   (roomCount === "" || (roomCount === "4" ? rooms >= 4 : rooms === parseInt(roomCount)));
-        });
+        if (isNaN(minRating)) minRating = 0;
+        if (isNaN(minPrice)) minPrice = 0;
+        if (isNaN(maxPrice)) maxPrice = 1000000;
+        const apartments = window.amsterdam;
+        const filtered = [];
+
+        for (let i = 0; i <apartments.length; i++) {
+            const ap = apartments[i];
+            const rating = parseFloat(ap.review_scores_rating);
+            const price = parseFloat(ap.price.replace(/[^0-9.]/g, ''));
+            const rooms = parseInt(ap.bedrooms);
+            
+            const validRating = isNaN(rating) ? 0 : rating;
+            const validPrice = isNaN(price) ? 0 : price;
+            const validRooms = isNaN(rooms) ? 0 : rooms;
+
+            let roomCondition = false;
+            if (roomCount === "") {
+                roomCondition = true;
+            } else if (roomCount === "4") {
+                roomCondition = validRooms === parseInt(roomCount);
+            }
+
+            if (
+                validRating >= minRating &&
+                validPrice >= minPrice &&
+                validPrice <= maxPrice &&
+                roomCondition
+            ) {
+                filtered.push(ap);
+            }
+
+        }
 
         appendApartmentCards(filtered);
     });
@@ -152,6 +188,5 @@ function setupHamburger() {
     icon.classList.toggle('fa-times');
   });
 }
-
 
 
