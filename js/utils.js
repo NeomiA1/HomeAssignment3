@@ -3,8 +3,6 @@ window.addEventListener('DOMContentLoaded', () => {
     logoutBtnHandler();
     appendApartmentCards(window.amsterdam);
     showUserName();
-    setupFilterForm();
-    setupResetButton();
     setupHamburger();
 });
 function checkIfLoggedIn() {
@@ -66,35 +64,33 @@ function addApartmentCard(apId, apURL, apName, apDescription, apPic) {
 
   const favBtn = createElement('button', 'fav-button');
   favBtn.textContent = favorites.includes(apId) ? '★ Remove from Favorites' : '☆ Add to Favorites';
-
   favBtn.addEventListener('click', () => {
-    favorites = loadFromStorage(`${username}_favorites`) || [];
-    let found = false;
+  favorites = loadFromStorage(`${username}_favorites`) || [];
 
-    let newFavorites = [];
+  let found = false;
+  let newFavorites = [];
 
-    for (let i = 0; i < favorites.length; i++) {
-     if (favorites[i] === apId) {
+  for (let i = 0; i < favorites.length; i++) {
+    if (favorites[i] === apId) {
       found = true;
-     continue;
-    }
-     newFavorites.push(favorites[i]); 
-    }
-
-    if (found) {
-    favorites = newFavorites;
     } else {
-  favorites.push(apId);
-}
-    saveToStorage(`${username}_favorites`, favorites);
-    favBtn.textContent = found ? '★ Remove from Favorites' : '☆ Add to Favorites';
-  });   
+      newFavorites.push(favorites[i]);
+    }
+  }
 
-  // עטיפת הכפתורים יחד בשורה אחת
+  if (found) {
+    favorites = newFavorites;
+    favBtn.textContent = '☆ Add to Favorites'; 
+  } else {
+    favorites.push(apId);
+    favBtn.textContent = '★ Remove from Favorites';
+  }
+  saveToStorage(`${username}_favorites`, favorites);
+});
+ 
   const btnsContainer = createElement('div', 'buttons-container');
   btnsContainer.append(rentBtn, favBtn);
 
-  // הרכבת כרטיס
   cardDiv.append(title, image, id, description, btnsContainer);
   listingSection.appendChild(cardDiv);
 }
@@ -114,65 +110,6 @@ function appendApartmentCards(amsterdam) {
         );
     });
     document.querySelector('#apartment-count').textContent = amsterdam.length;
-}
-
-function setupFilterForm() {
-    const filterForm = document.querySelector('#filter-form');
-    if (!filterForm) return;
-
-    filterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        let minRating = parseFloat(document.querySelector('#min-rating').value) || 0;
-        let minPrice = parseFloat(document.querySelector('#min-price').value) || 0;
-        let maxPrice = parseFloat(document.querySelector('#max-price').value) || Infinity;
-        let roomCount = document.querySelector('#room-count').value;
-
-        if (isNaN(minRating)) minRating = 0;
-        if (isNaN(minPrice)) minPrice = 0;
-        if (isNaN(maxPrice)) maxPrice = 1000000;
-        const apartments = window.amsterdam;
-        const filtered = [];
-
-        for (let i = 0; i <apartments.length; i++) {
-            const ap = apartments[i];
-            const rating = parseFloat(ap.review_scores_rating);
-            const price = parseFloat(ap.price.replace(/[^0-9.]/g, ''));
-            const rooms = parseInt(ap.bedrooms);
-            
-            const validRating = isNaN(rating) ? 0 : rating;
-            const validPrice = isNaN(price) ? 0 : price;
-            const validRooms = isNaN(rooms) ? 0 : rooms;
-
-            let roomCondition = false;
-            if (roomCount === "") {
-                roomCondition = true;
-            } else if (roomCount === "4") {
-                roomCondition = validRooms === parseInt(roomCount);
-            }
-
-            if (
-                validRating >= minRating &&
-                validPrice >= minPrice &&
-                validPrice <= maxPrice &&
-                roomCondition
-            ) {
-                filtered.push(ap);
-            }
-
-        }
-
-        appendApartmentCards(filtered);
-    });
-}
-
-function setupResetButton() {
-    const resetBtn = document.querySelector('#reset-filter');
-    if (!resetBtn) return;
-    resetBtn.addEventListener('click', () => {
-        document.querySelector('#filter-form').reset();
-        appendApartmentCards(window.amsterdam);
-    });
 }
 
 function setupHamburger() {

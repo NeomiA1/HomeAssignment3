@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>${listing.description}</p>
         <p><strong>Price:</strong> $${listing.price} per night</p>
       </div>
-      <button class="remove-button">Remove from Favorites</button>
-    `;
+      <button class="remove-button">Remove from Favorites</button>`;
 
     card.querySelector(".remove-button").addEventListener("click", () => {
       favorites.splice(index, 1);
