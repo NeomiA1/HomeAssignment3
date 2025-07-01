@@ -15,19 +15,18 @@
       </div>
       <h1>Login</h1>
 
-      <form id="login-form" autocomplete="off">
+      <form id="login-form">
         <label for="username">User name:</label>
-        <input type="text" id="username"  autocomplete="off" placeholder="User name" required />
+        <input type="text" id="username"  autocomplete="on" placeholder="User name" required />
         
         <label for="password">Password:</label>
-        <input type="password" id="password" autocomplete="off" placeholder="Password" required />
+        <input type="password" id="password" autocomplete="on" placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
 
       <p id="error"></p>
       <p>Don't have an account? <a href="register.html">Register here</a></p>
     </main>
-
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
   </body>
